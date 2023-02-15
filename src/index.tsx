@@ -1,21 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Router } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
 import App from './App';
+import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
+import { LoadingContextProvider } from './contexts/LoadingContext';
 
-const history = createMemoryHistory();
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
 root.render(
-  <Router location={history.location} navigator={history}>
     <React.StrictMode>
-      <App />
+        <BrowserRouter>
+            <LoadingContextProvider>
+                <App />
+            </LoadingContextProvider>
+        </BrowserRouter>
     </React.StrictMode>
-  </Router>,
 );
 
 // If you want to start measuring performance in your app, pass a function
