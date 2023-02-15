@@ -1,11 +1,10 @@
 import axios, { AxiosInstance } from "axios";
-let baseURL: string = 'https://itunes.apple.com';
 
 const Api: AxiosInstance = axios.create({
-  baseURL,
+  baseURL: `https://api.allorigins.win/get?url=${encodeURIComponent('https://itunes.apple.com')}`,
   withCredentials: true,
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   },
   timeout: 180000
 });
