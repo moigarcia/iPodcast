@@ -25,17 +25,6 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "jest": {
-    "verbose": true,
-    "moduleDirectories": ["node_modules", "src"],
-    "testEnvironment": "node",
-    "transformIgnorePatterns": [
-      "node_modules/(?!variables/.*)"
-    ],
-    "transform": {
-      "^.+\\.jsx?$": "babel-jest"
-    }
-  },
   "eslintConfig": {
     "extends": [
       "react-app",
