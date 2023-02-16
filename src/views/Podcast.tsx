@@ -1,5 +1,5 @@
 const Podcast = () => {
-    return <div>Hola podcast</div>;
+    return <div data-testid="Podcast">Hola podcast</div>;
 };
 
 export default Podcast;

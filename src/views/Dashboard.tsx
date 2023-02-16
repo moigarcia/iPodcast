@@ -15,7 +15,7 @@ const Dashboard = () => {
         getPodcastList()
     }, [])
 
-    return <div>{podcastList.map(item => item.title.label)}</div>;
+    return <div data-testid="Dashboard">{podcastList.map(item => item.title.label)}</div>;
 };
 
 export default Dashboard;

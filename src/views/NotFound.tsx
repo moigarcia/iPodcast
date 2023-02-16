@@ -1,5 +1,5 @@
 const NotFound = () => {
-    return <div>No existe la ruta</div>;
+    return <div data-testid="NotFound">No existe la ruta</div>;
 };
 
 export default NotFound;
