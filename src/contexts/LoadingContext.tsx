@@ -10,7 +10,7 @@ type LoadingProviderProps = {
 };
 
 export const LoadingContextProvider = ({ children }: LoadingProviderProps) => {
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
 
   const showLoading = useCallback((loading: boolean) => {
     setLoading(loading)

@@ -1,0 +1,47 @@
+@import '../../colors';
+@import '../../variables';
+
+.Search {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    position: fixed;
+    z-index: 2;
+    top: 51px;
+    background-color: $tertiary;
+    width: 100%;
+    
+    @media (min-width: $breakpoint-web) {
+        margin-right: 40px;
+        justify-content: flex-end;
+    }
+    &__badge{
+        color: white;
+        background-color: $primary;
+        height: 35px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50px;
+        border-radius: 6px;
+        margin-right: 10px;
+    }
+    input {
+        line-height: 1.4375em;
+        font-size: 1rem;
+        font-weight: 400;
+        height: 35px;
+        color: rgb(33, 43, 54);
+        box-sizing: border-box;
+        border: 1px solid $secondary;
+        cursor: text;
+        display: inline-flex;
+        -webkit-box-align: center;
+        align-items: center;
+        position: relative;
+        border-radius: 4px;
+        padding-left: 14px;
+    }
+}

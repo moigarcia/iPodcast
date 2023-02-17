@@ -1,0 +1,55 @@
+@import '../../../colors';
+@import '../../../variables';
+
+.CardList{
+    width: 300px;
+    min-height: 300px;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    margin: 10px;
+    &__box{
+        cursor: pointer;
+        border: 1px solid $secondary;
+        height: 175px;
+        width: 100%;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        &__absolute{
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            top: 50px;
+            width: 100%;
+            img{
+                border-radius: 75px;
+                width: 150px;
+                height: 150px;
+            }
+            h4{
+                margin: 10px 2px;
+                text-align: center;
+                display: inline-block;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+              
+            }
+            span{
+                margin: 0px 2px;
+                text-align: center;
+                display: inline-block;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                color: gray;
+            }
+
+        }
+    }
+}

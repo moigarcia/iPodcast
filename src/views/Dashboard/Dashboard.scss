@@ -1,0 +1,15 @@
+@import '../../colors';
+@import '../../variables';
+
+.Dashboard {
+   
+   padding: 51px 20px;
+
+   &__container{
+      margin: 20px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+   }
+}

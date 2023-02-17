@@ -1,34 +1,14 @@
-import {
-    createBrowserRouter,
-    RouterProvider,
-  } from "react-router-dom";
-import { Dashboard, NotFound, Podcast, Episode } from './views';
-
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import routesConfig from './routes/routesConfig';
 import './App.scss';
 
+
 const App = () => {
-    const router = createBrowserRouter([
-        {
-          path: "/",
-          element: <Dashboard />,
-        },
-        {
-          path: "/podcast/:podcastId",
-          element: <Podcast />,
-        },
-        {
-          path: "/podcast/:podcastId/episode/:episodeId",
-          element: <Episode />,
-        },
-        {
-          path: "*",
-          element: <NotFound />,
-        },
-    
-      ]);
+  
+    const router = createBrowserRouter(routesConfig);
 
     return (
-        <div className="App" data-testid="App">
+        <div className="App">
             <RouterProvider router={router} />
         </div>
     );
