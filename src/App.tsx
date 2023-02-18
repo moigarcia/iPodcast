@@ -4,11 +4,10 @@ import './App.scss';
 
 
 const App = () => {
-  
     const router = createBrowserRouter(routesConfig);
 
     return (
-        <div className="App">
+        <div className="App" data-testid="App">
             <RouterProvider router={router} />
         </div>
     );

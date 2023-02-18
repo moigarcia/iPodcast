@@ -1,9 +1,11 @@
 import { useEffect, useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Podcast } from '../../@types/podcast';
 import { getPodcastsList } from '../../service/podcasts';
 import { useLoadingContext } from '../../contexts/LoadingContext';
 import CardList from '../../components/Cards/CardsList/CardList';
 import Search from '../../components/Search/Search';
+import useIsMountedRef from '../../hooks/useIsMounted';
 import './Dashboard.scss';
 
 const Dashboard = () => {
@@ -11,26 +13,30 @@ const Dashboard = () => {
     const [podcastList, setPodcastList] = useState<Podcast[]>([]);
     const [podcastAfterFilter, setPodcastAfterFilter] = useState<Podcast[]>([]);
     const [filterName, setFilterName] = useState('');
+    const isMountedRef = useIsMountedRef();
+    const navigate = useNavigate();
+
     const getPodcastList = useCallback(async () => {
         try {
-            const response = await getPodcastsList();
+            if (isMountedRef.current) {
+                const response = await getPodcastsList();
 
-            setPodcastList(response.entry);
-            setPodcastAfterFilter(response.entry);
+                setPodcastList(response);
+                setPodcastAfterFilter(response);
+            }
         } catch (error) {
             console.error(error);
         } finally {
             hideLoading();
         }
-    }, [hideLoading]);
+    }, [hideLoading, isMountedRef]);
 
-    const podcastToLoad = () => {
+    const podcastToLoad = useCallback(async () => {
         let podcastAfterFilterTemp: Podcast[] = podcastList;
 
         if (filterName) {
             podcastAfterFilterTemp = podcastAfterFilterTemp.filter((item: Record<string, any>) => {
                 for (const key in item) {
-                    console.log(item);
                     if (key === 'im:artist' || key === 'title') {
                         if (item[key].label?.toLowerCase().indexOf(filterName.toLowerCase()) !== -1) {
                             return true;
@@ -42,15 +48,17 @@ const Dashboard = () => {
         }
 
         setPodcastAfterFilter(podcastAfterFilterTemp);
-    };
+    }, [filterName, podcastList]);
 
     useEffect(() => {
-        getPodcastList();
-    }, [getPodcastList]);
+        if (isMountedRef.current) {
+            getPodcastList();
+        }
+    }, [getPodcastList, isMountedRef]);
 
     useEffect(() => {
         podcastToLoad();
-    }, [filterName]);
+    }, [filterName, podcastToLoad]);
 
     const handleSearch = (value: string) => {
         setFilterName(value);
@@ -58,10 +66,10 @@ const Dashboard = () => {
 
     return (
         <div className="Dashboard" data-testid="Dashboard">
-            <div className="Dashboard__container" data-testid="Dashboard">
+            <div className="Dashboard__container">
                 <Search total={podcastAfterFilter.length} setFilterName={handleSearch} />
                 {podcastAfterFilter.map((podcast, index) => (
-                    <CardList podcast={podcast} key={index} />
+                    <CardList podcast={podcast} key={index} navigate={navigate} />
                 ))}
             </div>
         </div>

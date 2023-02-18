@@ -1,4 +1,10 @@
-import { render, screen, waitFor } from '@testing-library/react';
+/* eslint-disable testing-library/await-async-query */
+/* eslint-disable testing-library/no-wait-for-side-effects */
+/* eslint-disable testing-library/prefer-presence-queries */
+/* eslint-disable testing-library/no-wait-for-multiple-assertions */
+import { render, screen, waitFor, cleanup, fireEvent } from '@testing-library/react';
+import '@testing-library/jest-dom'
+import { BrowserRouter } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import { Podcast } from '../../@types/podcast';
 import { getPodcastsList } from '../../service/podcasts';
@@ -91,59 +97,72 @@ const podcastList: Podcast[] = [
 
 const value = {
     loading: false,
-    showLoading: () => true,
-    hideLoading: () => false,
+    showLoading: jest.fn(),
+    hideLoading: jest.fn(),
 };
+
+beforeEach(() => {
+    (getPodcastsList as jest.MockedFunction<typeof getPodcastsList>).mockResolvedValue(podcastList);
+});
+
+afterEach(() => {
+    jest.resetAllMocks();
+    cleanup()
+});
+
 describe('Dashboard', () => {
-    test('renders podcast titles', async () => {
-        (getPodcastsList as jest.MockedFunction<typeof getPodcastsList>).mockResolvedValue({
-            entry: podcastList,
+    test('Dashboard render, getPodcastsList called and CardList render', async () => {
+        render(
+            <BrowserRouter>
+                <LoadingContext.Provider value={value}>
+                    <Dashboard />
+                </LoadingContext.Provider>
+            </BrowserRouter>
+        );
+        await waitFor(() => {
+            expect(screen.getByTestId('Dashboard')).toBeTruthy();
+            expect(getPodcastsList).toHaveBeenCalled();
+            expect(screen.getByTestId('CardList')).toBeTruthy();
+        });
+    });
+
+    test('Error getPodcastList', async () => {
+        const consoleSpy = jest.spyOn(console, 'error');
+        (getPodcastsList as jest.MockedFunction<typeof getPodcastsList>).mockRejectedValue({
+            message: 'Error 1',
         });
 
         render(
-            <LoadingContext.Provider value={value}>
-                <Dashboard />
-            </LoadingContext.Provider>
+            <BrowserRouter>
+                <LoadingContext.Provider value={value}>
+                    <Dashboard />
+                </LoadingContext.Provider>
+            </BrowserRouter>
         );
 
         await waitFor(() => {
-            const titles = podcastList.map((podcast) => podcast.title.label);
-            const podcastTitles = screen.getAllByText(titles[0]);
-            expect(podcastTitles).toHaveLength(podcastList.length);
+            expect(consoleSpy).toHaveBeenCalled();
         });
+
+        consoleSpy.mockRestore();
     });
-});
-test('Error getPodcastList', async () => {
-    const consoleSpy = jest.spyOn(console, 'error');
-    (getPodcastsList as jest.MockedFunction<typeof getPodcastsList>).mockRejectedValue({
-        message: 'Error 1',
-    });
+    test('filters the list of podcasts', async () => {
+        render(
+            <BrowserRouter>
+                <LoadingContext.Provider value={value}>
+                    <Dashboard />
+                </LoadingContext.Provider>
+            </BrowserRouter>
+        );
+        await waitFor( () => {
+            fireEvent.change(screen.getByPlaceholderText('Filter podcast...'), { target: { value: podcastList[0].title.label } });
+      
+            expect(screen.queryByTestId('CardList')).toBeTruthy();
 
-    render(
-        <LoadingContext.Provider value={value}>
-            <Dashboard />
-        </LoadingContext.Provider>
-    );
+            fireEvent.change(screen.getByPlaceholderText('Filter podcast...'), { target: { value: 'test' } });
+        
+            expect(screen.queryByText(podcastList[0].title.label)).toBeFalsy();
 
-    await waitFor(() => {
-        expect(consoleSpy).toHaveBeenCalled();
-    });
-
-    consoleSpy.mockRestore();
-});
-test('Should be render CardList', async () => {
-    (getPodcastsList as jest.MockedFunction<typeof getPodcastsList>).mockResolvedValue({
-        entry: podcastList,
-    });
-
-    render(
-        <LoadingContext.Provider value={value}>
-            <Dashboard />
-        </LoadingContext.Provider>
-    );
-
-    await waitFor(() => {
-        const cardElement = screen.getByTestId('CardList');
-        expect(cardElement).toBeTruthy();
+        });
     });
 });

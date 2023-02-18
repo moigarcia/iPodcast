@@ -14,7 +14,6 @@ export const LoadingContextProvider = ({ children }: LoadingProviderProps) => {
 
   const showLoading = useCallback((loading: boolean) => {
     setLoading(loading)
-    return loading
   }, [])
 
   const hideLoading = useCallback(() => {
