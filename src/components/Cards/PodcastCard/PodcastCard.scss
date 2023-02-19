@@ -28,9 +28,13 @@
         }
     }
     &__description {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-self: flex-start;
         h5,
         p {
-            margin: 0 0 5px;
+            margin: 10px 2px 5px;
         }
         p {
             font-style: italic;

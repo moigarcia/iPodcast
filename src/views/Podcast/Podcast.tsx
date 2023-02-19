@@ -1,11 +1,11 @@
-import { useState, useCallback, useEffect, Key } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
 import useIsMountedRef from '../../hooks/useIsMounted';
 import { PodcastDetail } from '../../@types/podcastDetail';
 import { getPodcastById } from '../../service/podcasts';
 import { useLoadingContext } from '../../contexts/LoadingContext';
 import useLocalStorage from '../../hooks/useLocalStorage';
-import { getTomorrow, getDuration, formatDate } from '../../utils/time';
+import { getTomorrow } from '../../utils/time';
 import PodcastCard from '../../components/Cards/PodcastCard/PodcastCard';
 import { Podcast } from '../../@types/podcast';
 import './Podcast.scss';
@@ -48,7 +48,8 @@ const PodcastView = () => {
             showLoading(true);
             getPodcast();
         }
-    }, [getPodcast, isMountedRef, showLoading]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const onNavigate = (route: string, podcastDetail: PodcastDetail, podcast: Podcast) => {
         navigate(route, { state: { podcastDetail, podcast } });

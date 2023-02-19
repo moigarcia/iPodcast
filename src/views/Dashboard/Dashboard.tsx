@@ -43,7 +43,7 @@ const Dashboard = () => {
         } finally {
             hideLoading();
         }
-    }, [hideLoading, isMountedRef]);
+    }, [date, hideLoading, isMountedRef, setDate, setStorageList, storageList]);
 
     const podcastToLoad = useCallback(async () => {
         let podcastAfterFilterTemp: Podcast[] = podcastList;
@@ -69,7 +69,8 @@ const Dashboard = () => {
             showLoading(true);
             getPodcastList();
         }
-    }, [getPodcastList, isMountedRef]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
         podcastToLoad();
