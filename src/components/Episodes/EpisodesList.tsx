@@ -29,9 +29,9 @@ const EpisodeList = ({ podcastData, onNavigate, location }: Props) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {podcastData?.map((episode: PodcastDetail, index: Key) => {
-                            if (index) {
-                                return (
+                        {podcastData?.map(
+                            (episode: PodcastDetail, index: Key) =>
+                                index > 0 && (
                                     <tr key={index}>
                                         <td
                                             data-testid="Episode"
@@ -48,9 +48,8 @@ const EpisodeList = ({ podcastData, onNavigate, location }: Props) => {
                                         <td>{formatDate(episode.releaseDate)}</td>
                                         <td>{getDuration(episode.trackTimeMillis)}</td>
                                     </tr>
-                                );
-                            }
-                        })}
+                                )
+                        )}
                     </tbody>
                 </table>
             </div>
