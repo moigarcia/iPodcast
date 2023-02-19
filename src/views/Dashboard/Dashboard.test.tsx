@@ -110,6 +110,8 @@ afterEach(() => {
     cleanup()
 });
 
+afterAll(() => localStorage.clear())
+
 describe('Dashboard', () => {
     test('Dashboard render, getPodcastsList called and CardList render', async () => {
         render(
@@ -126,26 +128,6 @@ describe('Dashboard', () => {
         });
     });
 
-    test('Error getPodcastList', async () => {
-        const consoleSpy = jest.spyOn(console, 'error');
-        (getPodcastsList as jest.MockedFunction<typeof getPodcastsList>).mockRejectedValue({
-            message: 'Error 1',
-        });
-
-        render(
-            <BrowserRouter>
-                <LoadingContext.Provider value={value}>
-                    <Dashboard />
-                </LoadingContext.Provider>
-            </BrowserRouter>
-        );
-
-        await waitFor(() => {
-            expect(consoleSpy).toHaveBeenCalled();
-        });
-
-        consoleSpy.mockRestore();
-    });
     test('filters the list of podcasts', async () => {
         render(
             <BrowserRouter>
@@ -164,5 +146,39 @@ describe('Dashboard', () => {
             expect(screen.queryByText(podcastList[0].title.label)).toBeFalsy();
 
         });
+    });
+    test('getPodcastList not called', async () => {
+        render(
+            <BrowserRouter>
+                <LoadingContext.Provider value={value}>
+                    <Dashboard />
+                </LoadingContext.Provider>
+            </BrowserRouter>
+        );
+        await waitFor(() => {
+            expect(getPodcastsList).not.toHaveBeenCalled();
+            expect(screen.getByTestId('CardList')).toBeTruthy();
+        });
+    });
+    test('Error getPodcastList', async () => {
+        localStorage.removeItem('dateDashboard');
+        const consoleSpy = jest.spyOn(console, 'error');
+        (getPodcastsList as jest.MockedFunction<typeof getPodcastsList>).mockRejectedValue({
+            message: 'Error 1',
+        });
+
+        render(
+            <BrowserRouter>
+                <LoadingContext.Provider value={value}>
+                    <Dashboard />
+                </LoadingContext.Provider>
+            </BrowserRouter>
+        );
+
+        await waitFor(() => {
+            expect(consoleSpy).toHaveBeenCalled();
+        });
+
+        consoleSpy.mockRestore();
     });
 });

@@ -6,7 +6,9 @@ import { useLoadingContext } from '../../contexts/LoadingContext';
 import CardList from '../../components/Cards/CardsList/CardList';
 import Search from '../../components/Search/Search';
 import useIsMountedRef from '../../hooks/useIsMounted';
+import useLocalStorage from '../../hooks/useLocalStorage';
 import './Dashboard.scss';
+import getTomorrow from '../../utils/time';
 
 const Dashboard = () => {
     const { hideLoading } = useLoadingContext();
@@ -15,11 +17,23 @@ const Dashboard = () => {
     const [filterName, setFilterName] = useState('');
     const isMountedRef = useIsMountedRef();
     const navigate = useNavigate();
+    const [date, setDate] = useLocalStorage('dateDashboard', null);
+    const [storageList, setStorageList] = useLocalStorage('storageList', null);
 
     const getPodcastList = useCallback(async () => {
         try {
             if (isMountedRef.current) {
-                const response = await getPodcastsList();
+                let response: Podcast[];
+                const today = Math.round(Date.now() / 1000);
+               
+                if(today > Number(date)){
+                    response = await getPodcastsList();
+                    setStorageList(response);
+                    const dateTimestamp = getTomorrow();
+                    setDate(dateTimestamp);
+                } else {
+                    response = storageList
+                }
 
                 setPodcastList(response);
                 setPodcastAfterFilter(response);
@@ -67,8 +81,8 @@ const Dashboard = () => {
     return (
         <div className="Dashboard" data-testid="Dashboard">
             <div className="Dashboard__container">
-                <Search total={podcastAfterFilter.length} setFilterName={handleSearch} />
-                {podcastAfterFilter.map((podcast, index) => (
+                <Search total={podcastAfterFilter?.length} setFilterName={handleSearch} />
+                {podcastAfterFilter?.map((podcast, index) => (
                     <CardList podcast={podcast} key={index} navigate={navigate} />
                 ))}
             </div>

@@ -1,20 +1,34 @@
 import { useState, useCallback, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import useIsMountedRef from '../../hooks/useIsMounted';
+import { PodcastDetail } from '../../@types/podcastDetail';
 import { getPodcastById } from '../../service/podcasts';
 import { useLoadingContext } from '../../contexts/LoadingContext';
-import './Podcast.scss'
+import useLocalStorage from '../../hooks/useLocalStorage';
+import getTomorrow from '../../utils/time';
+import './Podcast.scss';
 
-const Podcast = () => {
-    const location = useLocation()
+const PodcastView = () => {
+    const params = useParams();
     const { hideLoading } = useLoadingContext();
     const isMountedRef = useIsMountedRef();
     const [podcastData, setPodcastData] = useState(null);
+    const [storagePodcast, setStoragePodcast] = useLocalStorage(params.podcastId, null);
 
     const getPodcast = useCallback(async () => {
         try {
             if (isMountedRef.current) {
-                const response = await getPodcastById(location.pathname);
+                let response: PodcastDetail;
+                const today = Math.round(Date.now() / 1000);
+                if (storagePodcast && today < Number(storagePodcast.date)) {
+                    response = storagePodcast;
+                } else {
+                    const dateTimestamp = getTomorrow();
+                    response = await getPodcastById(params.podcastId);
+                    response.date = dateTimestamp
+                    setStoragePodcast(response);
+                }
+
                 setPodcastData(response);
             }
         } catch (error) {
@@ -22,7 +36,7 @@ const Podcast = () => {
         } finally {
             hideLoading();
         }
-    }, [hideLoading, isMountedRef]);
+    }, [hideLoading, isMountedRef, params.podcastId, setStoragePodcast, storagePodcast]);
 
     useEffect(() => {
         if (isMountedRef.current) {
@@ -37,4 +51,4 @@ const Podcast = () => {
     );
 };
 
-export default Podcast;
+export default PodcastView;

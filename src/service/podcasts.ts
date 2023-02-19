@@ -9,7 +9,7 @@ const getPodcastsList = async () => {
 const getPodcastById = async (podcastId: string) => {
   const response = await Api.get(`/lookup?id=${podcastId}`);
   const {results} = JSON.parse(response.data.contents)
-  return results.entry
+  return results[0]
 };
 
 export { getPodcastsList, getPodcastById };

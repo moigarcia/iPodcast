@@ -1,4 +1,5 @@
 export type PodcastDetail = {
+    date?: number,
     wrapperType: string;
     kind: string;
     collectionId: number;
