@@ -102,7 +102,7 @@ beforeEach(() => {
     render(
         <BrowserRouter>
             <LoadingContext.Provider value={value}>
-                <CardList podcast={podcast} navigate={mockedUsedNavigate} />
+                <CardList podcast={podcast} onNavigate={mockedUsedNavigate} />
             </LoadingContext.Provider>
         </BrowserRouter>
     );

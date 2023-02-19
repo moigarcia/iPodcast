@@ -1,3 +1,4 @@
+/* eslint-disable jest/no-conditional-expect */
 /* eslint-disable testing-library/no-render-in-setup */
 /* eslint-disable testing-library/await-async-query */
 /* eslint-disable testing-library/no-wait-for-side-effects */
@@ -97,11 +98,13 @@ const value = {
     hideLoading: jest.fn(),
 };
 
+const onNavigate = jest.fn();
+
 beforeEach(() => {
     render(
         <BrowserRouter>
             <LoadingContext.Provider value={value}>
-                <PodcastCard podcast={podcast} />
+                <PodcastCard podcast={podcast} onNavigate={onNavigate} />
             </LoadingContext.Provider>
         </BrowserRouter>
     );
@@ -117,5 +120,15 @@ describe('PodcastCard', () => {
         await waitFor(() => {
             expect(screen.getByTestId('PodcastCard')).toBeInTheDocument();
         });
+    });
+    test('renders PodcastCard title', () => {
+        expect(screen.getByTestId('PodcastCardTitle')).toBeInTheDocument();
+        expect(screen.getByTestId('PodcastCardTitle')).toHaveClass('PodcastCard__title');
+        expect(screen.getByTestId('PodcastCardTitle')).toHaveStyle('cursor: pointer');
+
+        if (onNavigate) {
+            fireEvent.click(screen.getByTestId('PodcastCardTitle'));
+            expect(onNavigate).toHaveBeenCalledWith(`/podcast/${podcast.id.attributes['im:id']}`, podcast);
+        }
     });
 });

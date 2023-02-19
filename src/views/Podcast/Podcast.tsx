@@ -7,8 +7,9 @@ import { useLoadingContext } from '../../contexts/LoadingContext';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import { getTomorrow, getDuration, formatDate } from '../../utils/time';
 import PodcastCard from '../../components/Cards/PodcastCard/PodcastCard';
-import './Podcast.scss';
 import { Podcast } from '../../@types/podcast';
+import './Podcast.scss';
+import EpisodeList from '../../components/Episodes/EpisodesList';
 
 const PodcastView = () => {
     const params = useParams();
@@ -51,55 +52,17 @@ const PodcastView = () => {
 
     const onNavigate = (route: string, podcastDetail: PodcastDetail, podcast: Podcast) => {
         navigate(route, { state: { podcastDetail, podcast } });
+        showLoading(true);
     };
 
     return (
         <div className="Podcast" data-testid="Podcast">
-            <div className="Podcast__container">
-                <PodcastCard podcast={location.state} />
-                <div className="Podcast__container__episodes">
-                    <div className="Podcast__container__episodes__total">Episodes: {podcastData?.length - 1}</div>
-                    <div className="Podcast__container__episodes__list">
-                        <table className="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Title</th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Duration</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {podcastData?.map(
-                                    (
-                                        episode: PodcastDetail,
-                                        index: Key
-                                    ) => {
-                                        if (index) {
-                                            return (
-                                                <tr key={index}>
-                                                    <td data-testid="Episode"
-                                                        onClick={() =>
-                                                            onNavigate(
-                                                                `/podcast/${location.state.id.attributes['im:id']}/episode/${episode.trackId}`,
-                                                                episode,
-                                                                location.state
-                                                            )
-                                                        }
-                                                    >
-                                                        {episode.trackName}
-                                                    </td>
-                                                    <td>{formatDate(episode.releaseDate)}</td>
-                                                    <td>{getDuration(episode.trackTimeMillis)}</td>
-                                                </tr>
-                                            );
-                                        }
-                                    }
-                                )}
-                            </tbody>
-                        </table>
-                    </div>
+            {podcastData && (
+                <div className="Podcast__container">
+                    <PodcastCard podcast={location.state} />
+                    <EpisodeList podcastData={podcastData} onNavigate={onNavigate} location={location} />
                 </div>
-            </div>
+            )}
         </div>
     );
 };

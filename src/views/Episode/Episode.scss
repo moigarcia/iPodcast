@@ -1,0 +1,19 @@
+@import '../../colors';
+@import '../../variables';
+
+.Episode {
+    padding: 51px 20px;
+
+    &__container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 20px;
+        @media (min-width: $breakpoint-web) {
+            flex-direction: row;
+            align-items: start;
+            margin: 20px 20px;
+        }
+    }
+}

@@ -1,0 +1,23 @@
+@import '../../../colors';
+@import '../../../variables';
+
+.EpisodeCard {
+    margin-top: 20px;
+    width: 350px;
+    @media (min-width: $breakpoint-web) {
+        margin-top: 0px;
+        padding: 0 20px;
+        width: auto;
+    }
+    &__box {
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        padding: 20px;
+        max-width: 600px;
+        p {
+            font-style: italic;
+        }
+        audio {
+            width: 100%;
+        }
+    }
+}

@@ -85,12 +85,14 @@ const Dashboard = () => {
 
     return (
         <div className="Dashboard" data-testid="Dashboard">
-            <div className="Dashboard__container">
-                <Search total={podcastAfterFilter?.length} setFilterName={handleSearch} />
-                {podcastAfterFilter?.map((podcast, index) => (
-                    <CardList podcast={podcast} key={index} navigate={onNavigate} />
-                ))}
-            </div>
+            {podcastAfterFilter && (
+                <div className="Dashboard__container">
+                    <Search total={podcastAfterFilter?.length} setFilterName={handleSearch} />
+                    {podcastAfterFilter?.map((podcast, index) => (
+                        <CardList podcast={podcast} key={index} onNavigate={onNavigate} />
+                    ))}
+                </div>
+            )}
         </div>
     );
 };

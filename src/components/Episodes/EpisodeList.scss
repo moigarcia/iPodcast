@@ -1,0 +1,26 @@
+@import '../../colors';
+@import '../../variables';
+
+.EpisodesList {
+    margin-top: 20px;
+    padding: 0 20px;
+    @media (min-width: $breakpoint-web) {
+        margin-top: 0px;
+    }
+    &__total {
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        padding: 10px 10px;
+        h4 {
+            margin-bottom: 0;
+        }
+    }
+    &__list {
+        margin-top: 20px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        padding: 10px 10px;
+        tr td:first-child {
+            color: $primary !important;
+            cursor: pointer;
+        }
+    }
+}
