@@ -77,7 +77,7 @@ const PodcastView = () => {
                                         if (index) {
                                             return (
                                                 <tr key={index}>
-                                                    <td
+                                                    <td data-testid="Episode"
                                                         onClick={() =>
                                                             onNavigate(
                                                                 `/podcast/${location.state.id.attributes['im:id']}/episode/${episode.trackId}`,

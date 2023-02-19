@@ -4,6 +4,8 @@ export type PodcastDetail = {
     kind: string;
     collectionId: number;
     trackId: number;
+    artistId?: number;
+    artistViewUrl?: string;
     artistName: string;
     collectionName: string;
     trackName: string;

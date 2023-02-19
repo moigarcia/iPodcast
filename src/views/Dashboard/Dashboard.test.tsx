@@ -112,6 +112,16 @@ afterEach(() => {
 
 afterAll(() => localStorage.clear())
 
+const mockedUsedNavigate = jest.fn((path: string) => {
+    window.location.href = path;
+});
+
+jest.mock('react-router-dom', () => ({
+    ...(jest.requireActual('react-router-dom') as any),
+    useNavigate: () => mockedUsedNavigate,
+    useLocation: jest.fn(() => ({ state: podcastList[0] })),
+}));
+
 describe('Dashboard', () => {
     test('Dashboard render, getPodcastsList called and CardList render', async () => {
         render(
@@ -159,6 +169,20 @@ describe('Dashboard', () => {
             expect(getPodcastsList).not.toHaveBeenCalled();
             expect(screen.getByTestId('CardList')).toBeTruthy();
         });
+    });
+
+    test('Navigate to episode view', async () => {
+        render(
+            <BrowserRouter>
+                <LoadingContext.Provider value={value}>
+                    <Dashboard />
+                </LoadingContext.Provider>
+            </BrowserRouter>
+        );
+
+        const cardBox = screen.queryByTestId('CardList__box');
+        fireEvent.click(cardBox);
+        expect(mockedUsedNavigate).toHaveBeenCalled();
     });
     test('Error getPodcastList', async () => {
         localStorage.removeItem('dateDashboard');

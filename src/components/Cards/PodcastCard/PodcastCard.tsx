@@ -5,7 +5,7 @@ type Prop = {
     podcast: Podcast;
 };
 const PodcastCard = ({ podcast }: Prop) => (
-    <div className="PodcastCard">
+    <div className="PodcastCard" data-testid="PodcastCard">
         <img alt="podcast=img" src={podcast['im:image'][2].label} />
         <div className="PodcastCard__title">
             <h4>{podcast.title.label}</h4>
