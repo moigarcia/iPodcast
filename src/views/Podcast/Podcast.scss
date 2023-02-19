@@ -2,14 +2,39 @@
 @import '../../variables';
 
 .Podcast {
-   
-   padding: 51px 20px;
+    padding: 51px 20px;
 
-   &__container{
-      margin: 20px 20px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-   }
+    &__container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin-top: 20px;
+        @media (min-width: $breakpoint-web) {
+            flex-direction: row;
+            // justify-content: space-between;
+            align-items: start;
+            margin: 20px 20px;
+        }
+        &__episodes {
+            margin-top: 20px;
+            padding: 0 20px;
+            @media (min-width: $breakpoint-web) {
+                margin-top: 0px;
+            }
+            &__total {
+                box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                padding: 10px 10px;
+            }
+            &__list {
+                margin-top: 20px;
+                box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+                padding: 10px 10px;
+                tr td:first-child{
+                    color: $primary !important;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
 }

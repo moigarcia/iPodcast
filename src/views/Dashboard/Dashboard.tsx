@@ -7,11 +7,11 @@ import CardList from '../../components/Cards/CardsList/CardList';
 import Search from '../../components/Search/Search';
 import useIsMountedRef from '../../hooks/useIsMounted';
 import useLocalStorage from '../../hooks/useLocalStorage';
+import { getTomorrow } from '../../utils/time';
 import './Dashboard.scss';
-import getTomorrow from '../../utils/time';
 
 const Dashboard = () => {
-    const { hideLoading } = useLoadingContext();
+    const { hideLoading, showLoading } = useLoadingContext();
     const [podcastList, setPodcastList] = useState<Podcast[]>([]);
     const [podcastAfterFilter, setPodcastAfterFilter] = useState<Podcast[]>([]);
     const [filterName, setFilterName] = useState('');
@@ -25,14 +25,14 @@ const Dashboard = () => {
             if (isMountedRef.current) {
                 let response: Podcast[];
                 const today = Math.round(Date.now() / 1000);
-               
-                if(today > Number(date)){
+
+                if (today > Number(date)) {
                     response = await getPodcastsList();
                     setStorageList(response);
                     const dateTimestamp = getTomorrow();
                     setDate(dateTimestamp);
                 } else {
-                    response = storageList
+                    response = storageList;
                 }
 
                 setPodcastList(response);
@@ -66,6 +66,7 @@ const Dashboard = () => {
 
     useEffect(() => {
         if (isMountedRef.current) {
+            showLoading(true);
             getPodcastList();
         }
     }, [getPodcastList, isMountedRef]);
@@ -78,12 +79,16 @@ const Dashboard = () => {
         setFilterName(value);
     };
 
+    const onNavigate = (route: string, podcast: Podcast) => {
+        navigate(route, { state: podcast });
+    };
+
     return (
         <div className="Dashboard" data-testid="Dashboard">
             <div className="Dashboard__container">
                 <Search total={podcastAfterFilter?.length} setFilterName={handleSearch} />
                 {podcastAfterFilter?.map((podcast, index) => (
-                    <CardList podcast={podcast} key={index} navigate={navigate} />
+                    <CardList podcast={podcast} key={index} navigate={onNavigate} />
                 ))}
             </div>
         </div>
