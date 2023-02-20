@@ -1,6 +1,10 @@
 # iPodcast
 This is a sample project that demonstrates how to use React to build a simple podcast app.
 
+## This project has used:
+    * Typescript
+    * Sass
+
 ## Getting started
 To get started with this project, clone the repository and run the following command to install the dependencies:
 
@@ -11,7 +15,7 @@ npm install
 In the project directory, you can run the following scripts:
 
  * npm start
-This command runs the app in development mode. Open http://localhost:3000 to view it in the browser. The page will reload if you make edits, and you will also see any lint errors in the console.
+This command runs the app in development mode. Open http://localhost:3000 to view it in the browser.
 
  * npm test
 This command launches the test runner in interactive watch mode. It allows you to run your tests while developing the app.

@@ -22,5 +22,8 @@
             color: $primary !important;
             cursor: pointer;
         }
+        tr td:last-child {
+            text-align: center;
+        }
     }
 }

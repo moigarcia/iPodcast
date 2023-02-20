@@ -9,8 +9,6 @@ import { BrowserRouter } from 'react-router-dom';
 import Navbar from './Navbar';
 import { LoadingContext } from '../../contexts/LoadingContext';
 
-
-
 const value = {
     loading: true,
     showLoading: jest.fn(),

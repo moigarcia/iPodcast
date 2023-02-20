@@ -14,8 +14,8 @@ const EpisodeCard = ({ podcastDetail }: Props) => {
             <div className="EpisodeCard__box">
                 <h4>{podcastDetail.trackName}</h4>
                 <p dangerouslySetInnerHTML={{ __html: sanitizeDescription }} />
-                <audio controls onLoadedData={() => hideLoading()}>
-                    <source src={podcastDetail.episodeUrl} type={`audio/${podcastDetail.episodeFileExtension}`} />
+                <audio data-testid="AudioTag" controls onLoadedData={() => hideLoading()}>
+                    <source data-testid="SourceTag"  src={podcastDetail.episodeUrl} type={`audio/${podcastDetail.episodeFileExtension}`} />
                 </audio>
             </div>
         </div>
