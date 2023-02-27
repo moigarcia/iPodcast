@@ -2,6 +2,7 @@
 This is a sample project that demonstrates how to use React to build a simple podcast app.
 
 ## This project has used:
+    * Node stable(18.14.2)
     * Typescript
     * Sass
 
